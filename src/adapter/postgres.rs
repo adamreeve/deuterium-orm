@@ -10,7 +10,6 @@ use deuterium::{SqlContext, QueryToSql};
 
 pub type PostgresPool = ::r2d2::Pool<::r2d2_postgres::PostgresConnectionManager>;
 pub type PostgresPooledConnection<'a> = ::r2d2::PooledConnection<
-    'a,
     ::r2d2_postgres::PostgresConnectionManager,
 >;
 
@@ -20,8 +19,7 @@ pub fn setup(cn_str: &str, pool_size: u32) -> PostgresPool {
         .pool_size(pool_size)
         .build();
 
-    let handler = Box::new(::r2d2::NoopErrorHandler);
-    ::r2d2::Pool::new(config, manager, handler).unwrap()
+    ::r2d2::Pool::new(config, manager).unwrap()
 }
 
 #[allow(missing_copy_implementations)]
