@@ -19,7 +19,12 @@ pub fn setup(cn_str: &str, pool_size: u32) -> PostgresPool {
         .pool_size(pool_size)
         .build();
 
-    ::r2d2::Pool::new(config, manager).unwrap()
+
+    match ::r2d2::Pool::new(config, manager)
+    {
+        Ok(pool) => pool,
+        Err(e) => panic!("Error creating postgresql pool: {}", e)
+    }
 }
 
 #[allow(missing_copy_implementations)]
